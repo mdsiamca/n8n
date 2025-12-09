@@ -1,0 +1,810 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "={{ $json.Text }}",
+                "options": {
+                    "systemMessage": "=You are a smart and friendly assistant for Facebook Page automation. Your job is to help reply to messages and comments.\n\nYour tone should be friendly and casual.\n\nRules:\n\n# Do not use \"*\" in output message\n\n1. When a user sends their first message (e.g., \"hi\", \"hello\"), greet them warmly.\n\n2. Reply naturally to user messages and questions.\n\n3. Keep responses concise and helpful.\n\n4. Be conversational and friendly."
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 3,
+            "position": [
+                640,
+                160
+            ],
+            "id": "a9167fc2-3425-47a3-b410-92dd4df48832",
+            "name": "AI Agent"
+        },
+        {
+            "parameters": {
+                "sessionIdType": "customKey",
+                "sessionKey": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+                "contextWindowLength": 20
+            },
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "typeVersion": 1.3,
+            "position": [
+                784,
+                384
+            ],
+            "id": "236883bb-385c-44aa-845f-598449d51b23",
+            "name": "Simple Memory"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4o-mini"
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                656,
+                384
+            ],
+            "id": "a2e01151-7a4c-4064-ae2d-e34399870ec3",
+            "name": "OpenAI Chat Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "u7Lz2BQM9hHe1Sro",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "multipleMethods": true,
+                "path": "massenger",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2.1,
+            "position": [
+                -896,
+                64
+            ],
+            "id": "0c7a4cf6-58f2-4d2c-9186-d8186ea34078",
+            "name": "Webhook",
+            "webhookId": "b2acf254-b50f-4c0c-bed3-07dd7e8628d8"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "verification-check",
+                            "leftValue": "={{ $json.query['hub.challenge'] }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "string",
+                                "operation": "exists",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -720,
+                -80
+            ],
+            "id": "verification-check-node",
+            "name": "Check If Verification"
+        },
+        {
+            "parameters": {
+                "respondWith": "text",
+                "responseBody": "={{ $json.query['hub.challenge'] }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.4,
+            "position": [
+                -592,
+                -160
+            ],
+            "id": "8f651c69-81e0-4464-8316-84e0acb61e11",
+            "name": "Respond to Webhook"
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.body.entry[0].messaging[0].message.text }}",
+                                        "rightValue": "text",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "exists",
+                                            "singleValue": true
+                                        },
+                                        "id": "text-exists"
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "image-check",
+                                        "leftValue": "={{ $json.body.entry[0].messaging[0].message.attachments[0].type }}",
+                                        "rightValue": "image",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "audio-check",
+                                        "leftValue": "={{ $json.body.entry[0].messaging[0].message.attachments[0].type }}",
+                                        "rightValue": "audio",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "comment-check",
+                                        "leftValue": "={{ $json.body.entry[0].changes[0].value.item }}",
+                                        "rightValue": "=comment",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.3,
+            "position": [
+                -592,
+                144
+            ],
+            "id": "7aa170b9-8457-4b24-9faa-88486e57a358",
+            "name": "Switch"
+        },
+        {
+            "parameters": {
+                "url": "=https://n8n-dashboard-mu.vercel.app/api/check-ai?userId={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                -336,
+                -48
+            ],
+            "id": "1ba19149-8150-4600-9a78-ed38aa0b59ba",
+            "name": "Check AI Status"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "ai-enabled-check",
+                            "leftValue": "={{ $json.ai_enabled }}",
+                            "rightValue": "true",
+                            "operator": {
+                                "type": "string",
+                                "operation": "equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -96,
+                -48
+            ],
+            "id": "f5858ca4-70d9-4022-b169-6859207d456f",
+            "name": "If AI Enabled"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://facebook-messenger-orpin.vercel.app/api/message?userId={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ {\n  \"text\": $('Webhook').item.json.body.entry[0].messaging[0].message.text,\n  \"sender\": \"user\",\n  \"name\": \"Facebook User\",\n  \"phone\": \"\"\n} }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                192,
+                -64
+            ],
+            "id": "89eb7c46-dc4f-42f3-92d0-c6a97cc80714",
+            "name": "Store User Message"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "text-field",
+                            "name": "Text",
+                            "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                448,
+                -80
+            ],
+            "id": "4d5f22c2-9769-4b89-9858-f9cb44db4842",
+            "name": "Prepare Text for AI"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://facebook-messenger-orpin.vercel.app/api/message?userId={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ {\n  \"text\": $json.output,\n  \"sender\": \"bot\",\n  \"name\": \"AI Assistant\",\n  \"phone\": \"\"\n} }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                992,
+                160
+            ],
+            "id": "5b65b8d5-e986-41d3-952d-73dcde06e310",
+            "name": "Store Bot Message"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].id }}/messages",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "access_token",
+                            "value": "EAAZAvhoqnQqYBQOTbWf3VMZA78RYF0mnF8diJXkDtUVvOKh27VgyudY096sWBKliMa0ytNGVxhEJE1UAc6Venvw4X1C9oLZAlS6dNZBmyUqWDAVJVdX2pULTLlCCAhMGO3UEZAg6B65QMoEtIjLZAsYXZAQKFIEC2zWvKeXcalhU4AkZCO2R9xb5qKxYIulTFMbLMmp2aa6XwY6yIOBB2OxZAdvQN"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ {\n  recipient: {\n    id: $('Webhook').item.json.body.entry[0].messaging[0].sender.id\n  },\n  messaging_type: \"RESPONSE\",\n  message: {\n    text: $('AI Agent').item.json.output\n  }\n} }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                1216,
+                160
+            ],
+            "id": "d816f419-508f-4234-9300-5e618dffb387",
+            "name": "Send Message to Facebook"
+        },
+        {
+            "parameters": {
+                "url": "={{ $json.body.entry[0].messaging[0].message.attachments[0].payload.url }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                192,
+                80
+            ],
+            "id": "7a616559-022d-404b-a995-96b7d632aa24",
+            "name": "Download Image"
+        },
+        {
+            "parameters": {
+                "resource": "image",
+                "operation": "analyze",
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "inputType": "base64",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 2.1,
+            "position": [
+                416,
+                80
+            ],
+            "id": "fa5a144a-b08e-4e84-8bfa-239f06a2ae31",
+            "name": "Analyze Image",
+            "credentials": {
+                "openAiApi": {
+                    "id": "u7Lz2BQM9hHe1Sro",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "resource": "audio",
+                "operation": "transcribe",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 2.1,
+            "position": [
+                416,
+                272
+            ],
+            "id": "70555caa-c481-4c48-a184-ed2d8327bf29",
+            "name": "Transcribe Audio",
+            "credentials": {
+                "openAiApi": {
+                    "id": "u7Lz2BQM9hHe1Sro",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "comment-filter",
+                            "leftValue": "={{ $json.body.entry[0].changes[0].value.from.id }}",
+                            "rightValue": "25111064955248317",
+                            "operator": {
+                                "type": "string",
+                                "operation": "exists",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -384,
+                592
+            ],
+            "id": "aa03a83e-bb1f-4331-af43-0dfdd4a354e4",
+            "name": "Filter Own Comments"
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "=USER MESSAGE: {{ $json.body.entry[0].changes[0].value.message }}",
+                "options": {
+                    "systemMessage": "=Make a friendly reply based on user comment. Not more than 50 words."
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 3,
+            "position": [
+                -160,
+                592
+            ],
+            "id": "53d51e7f-744c-41d7-94d6-c3983357a07f",
+            "name": "AI Comment Agent"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].changes[0].value.comment_id }}/comments",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer EAAZAvhoqnQqYBQOQYFOI590UWuHp9oTIRwKQW96DS0Y01uKzIttuZBft4tAWZB3QfurRntAKAXF3jmM9xZCZAlx9Luf0LSVwurFUIyp09Urr5WwPSJ84K6hcZApDT7d0AW1JeAclDDWSfI3yKLdXP6P4XtfyRxf9uMhtnRYr1YPailrEfhCk7CkNO6GecDZBR8mHeZAJFAiYA4XyZAtj8RCZCIutnXOshUPeyopmaZCSFJhxEpROkJPH8SJTjAZD"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "message",
+                            "value": "={{ $json.output }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                192,
+                480
+            ],
+            "id": "0772ea1a-45f2-453b-be89-e19139e221dc",
+            "name": "Reply to Comment"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].changes[0].value.comment_id }}/likes",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer EAAZAvhoqnQqYBQOQYFOI590UWuHp9oTIRwKQW96DS0Y01uKzIttuZBft4tAWZB3QfurRntAKAXF3jmM9xZCZAlx9Luf0LSVwurFUIyp09Urr5WwPSJ84K6hcZApDT7d0AW1JeAclDDWSfI3yKLdXP6P4XtfyRxf9uMhtnRYr1YPailrEfhCk7CkNO6GecDZBR8mHeZAJFAiYA4XyZAtj8RCZCIutnXOshUPeyopmaZCSFJhxEpROkJPH8SJTjAZD"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.3,
+            "position": [
+                192,
+                672
+            ],
+            "id": "fc0e0bd3-baf9-42d3-a771-fb168203a221",
+            "name": "Like Comment"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "gpt-4o-mini"
+                },
+                "builtInTools": {},
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                -96,
+                816
+            ],
+            "id": "e8587cc6-860c-4abd-8342-aa0298194dcc",
+            "name": "Comment OpenAI Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "u7Lz2BQM9hHe1Sro",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.4,
+            "position": [
+                1440,
+                160
+            ],
+            "id": "e5a8c74b-c194-453a-a71c-eb21b7a23732",
+            "name": "Respond Success"
+        }
+    ],
+    "connections": {
+        "AI Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Store Bot Message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Simple Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Check If Verification",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Switch",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check If Verification": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch": {
+            "main": [
+                [
+                    {
+                        "node": "Check AI Status",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Download Image",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Transcribe Audio",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Filter Own Comments",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check AI Status": {
+            "main": [
+                [
+                    {
+                        "node": "If AI Enabled",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If AI Enabled": {
+            "main": [
+                [
+                    {
+                        "node": "Store User Message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Store User Message": {
+            "main": [
+                [
+                    {
+                        "node": "Prepare Text for AI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Prepare Text for AI": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Store Bot Message": {
+            "main": [
+                [
+                    {
+                        "node": "Send Message to Facebook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Send Message to Facebook": {
+            "main": [
+                [
+                    {
+                        "node": "Respond Success",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Download Image": {
+            "main": [
+                [
+                    {
+                        "node": "Analyze Image",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Analyze Image": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Transcribe Audio": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter Own Comments": {
+            "main": [
+                [
+                    {
+                        "node": "AI Comment Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI Comment Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Reply to Comment",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Like Comment",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Comment OpenAI Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "AI Comment Agent",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "instanceId": "e9449025ad91432bb3eb5945996e3f19e9888f6e71906f2925fc462d86638b74"
+    }
+}
