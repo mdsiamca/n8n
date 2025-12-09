@@ -7,7 +7,7 @@ Here you’ll find:
 ✅ Real-world AI & automation workflows
 ✅ Beginner-friendly to advanced templates
 ✅ Business, marketing & lead automation systems
-✅ लगातार Free updates for the community
+✅ Free updates for the community
 
 If you want to learn how to customize these automations step-by-step, I regularly publish detailed Bangla tutorials on my YouTube channel:
 
