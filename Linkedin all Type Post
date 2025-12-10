@@ -8,12 +8,12 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1584,
-        -448
+        2016,
+        2560
       ],
       "typeVersion": 1,
-      "id": "86e9f117-a1c9-449f-9a42-c573332c0410",
-      "name": "Sticky Note"
+      "id": "6a92ac16-2140-4c95-8ed9-59797c5f2ec1",
+      "name": "Sticky Note1"
     },
     {
       "parameters": {
@@ -38,11 +38,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        608,
-        -16
+        1040,
+        2992
       ],
-      "id": "c4f13ba4-f84d-4a3b-b3e5-7612ea76e69f",
-      "name": "Configure Post Settings"
+      "id": "57b48f82-52b9-49a2-a6d8-c25b94f0394c",
+      "name": "Configure Post Settings1"
     },
     {
       "parameters": {
@@ -179,11 +179,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        832,
-        -64
+        1264,
+        2944
       ],
-      "id": "1199c8d9-24da-42ff-9ac0-19b40f02efb3",
-      "name": "Smart Content Router"
+      "id": "488f5150-9d8d-4885-ba8c-d1d0759bee7d",
+      "name": "Smart Content Router1"
     },
     {
       "parameters": {
@@ -199,11 +199,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        -784
+        1712,
+        2224
       ],
-      "id": "d1d4325e-471a-4e39-8f23-1fb293afd283",
-      "name": "Text Post"
+      "id": "a87f6d5b-e31e-416b-a4c8-6dc067b1e05d",
+      "name": "Text Post1"
     },
     {
       "parameters": {
@@ -219,11 +219,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        -400
+        1712,
+        2608
       ],
-      "id": "19a5bdd7-b00e-4dd4-8e6f-348b1476a379",
-      "name": "Article Post"
+      "id": "c42dd0fa-a1d1-41cf-8dcd-38de2ab3cdbb",
+      "name": "Article Post1"
     },
     {
       "parameters": {
@@ -233,17 +233,17 @@
         "nodeCredentialType": "linkedInOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Let's Automate All Instagram Post Type\"\n            },\n            \"shareMediaCategory\": \"ARTICLE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Now you can Automate All Instagram Post\"\n                    },\n                    \"originalUrl\": \"https://youtu.be/MnhpE1ERmSE?si=TxirFvgoqBihXpYi\",\n                    \"title\": {\n                        \"text\": \"Hi All\"\n                    },\n                    \"thumbnails\": [{\n                        \"url\": \"{{ $('Smart Content Router').item.json.url }}\"\n                    }]\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Let's Automate All Instagram Post Type\"\n            },\n            \"shareMediaCategory\": \"ARTICLE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Now you can Automate All Instagram Post\"\n                    },\n                    \"originalUrl\": \"https://youtu.be/MnhpE1ERmSE?si=TxirFvgoqBihXpYi\",\n                    \"title\": {\n                        \"text\": \"Hi All\"\n                    },\n                    \"thumbnails\": [{\n                        \"url\": \"{{ $('Smart Content Router1').item.json.url }}\"\n                    }]\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        -16
+        1712,
+        2992
       ],
-      "id": "f50a49af-c32a-400a-b888-646fd2cfdb3b",
-      "name": "Article with Image"
+      "id": "989961b1-5ded-43d3-8919-e4c468938ec2",
+      "name": "Article with Image1"
     },
     {
       "parameters": {
@@ -259,11 +259,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        176
+        1712,
+        3184
       ],
-      "id": "97aa246e-af66-4969-93d2-dfc63d3c22d1",
-      "name": "Register Image Upload"
+      "id": "ea534b88-ee8d-4816-a75c-6fc1e5ccd58b",
+      "name": "Register Image Upload1"
     },
     {
       "parameters": {
@@ -279,11 +279,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        560
+        1712,
+        3568
       ],
-      "id": "b323dc7c-cbd0-435a-85dc-c3572c665b3e",
-      "name": "Register Video Upload"
+      "id": "77ec26c3-c809-4a70-8f66-9c56d8e80a6f",
+      "name": "Register Video Upload1"
     },
     {
       "parameters": {
@@ -299,11 +299,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1728,
-        176
+        2160,
+        3184
       ],
-      "id": "b58003b5-65c9-4d82-be11-6efe1c1d6b92",
-      "name": "Upload Image File"
+      "id": "dc085547-2282-4348-9402-0184db26a818",
+      "name": "Upload Image File1"
     },
     {
       "parameters": {
@@ -313,7 +313,7 @@
         "nodeCredentialType": "linkedInOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $('Get LinkedIn UserInfo4').item.json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Now this is how we automate the image posting\"\n            },\n            \"shareMediaCategory\": \"IMAGE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Center stage!\"\n                    },\n                    \"media\": \"{{ $('Register Image Upload').item.json.value.asset }}\",\n                    \"title\": {\n                        \"text\": \"Post Automated By N8N\"\n                    }\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}\n\n",
+        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $('Get LinkedIn UserInfo9').item.json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Now this is how we automate the image posting\"\n            },\n            \"shareMediaCategory\": \"IMAGE\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Center stage!\"\n                    },\n                    \"media\": \"{{ $('Register Image Upload1').item.json.value.asset }}\",\n                    \"title\": {\n                        \"text\": \"Post Automated By N8N\"\n                    }\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}\n\n",
         "options": {
           "redirect": {
             "redirect": {}
@@ -323,11 +323,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1952,
-        176
+        2384,
+        3184
       ],
-      "id": "66f8ecf8-0734-47a4-9dea-c55e63cf7e58",
-      "name": "Linkedin Image Post"
+      "id": "3a1d9112-21c0-41f1-9382-9e7bba706944",
+      "name": "Linkedin Image Post1"
     },
     {
       "parameters": {
@@ -338,11 +338,11 @@
       "type": "n8n-nodes-base.linkedIn",
       "typeVersion": 1,
       "position": [
-        1280,
-        -592
+        1712,
+        2416
       ],
-      "id": "2b01932d-da72-4c7b-993e-281576e42f5a",
-      "name": "Text Post Linkedin"
+      "id": "4731e988-69d3-4908-ad23-0ad1d330c41a",
+      "name": "Text Post Linkedin1"
     },
     {
       "parameters": {
@@ -356,18 +356,18 @@
       "type": "n8n-nodes-base.linkedIn",
       "typeVersion": 1,
       "position": [
-        1504,
-        368
+        1936,
+        3376
       ],
-      "id": "de367f89-2940-41a5-a566-a151ce58d015",
-      "name": "Image Post Linkedin"
+      "id": "50941e33-9849-44f8-ad67-19aa5e65087e",
+      "name": "Image Post Linkedin1"
     },
     {
       "parameters": {
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "={{ $('Smart Content Router').item.json.url }}",
+          "value": "={{ $('Smart Content Router1').item.json.url }}",
           "mode": "url"
         },
         "options": {}
@@ -375,11 +375,11 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1280,
-        368
+        1712,
+        3376
       ],
-      "id": "b4136c86-bb6c-4c41-bd1b-b7698d3dccf8",
-      "name": "Download file"
+      "id": "513cf858-4c1f-4aa3-9c96-9bdd66fca832",
+      "name": "Download file2"
     },
     {
       "parameters": {
@@ -391,11 +391,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        -688
+        1488,
+        2320
       ],
-      "id": "e07f9016-782d-4cd9-8f6b-6ad13b35ea64",
-      "name": "Get LinkedIn UserInfo"
+      "id": "9ed75f9e-abdf-4f4a-8754-c8a1bbd88f35",
+      "name": "Get LinkedIn UserInfo5"
     },
     {
       "parameters": {
@@ -410,18 +410,18 @@
       "type": "n8n-nodes-base.linkedIn",
       "typeVersion": 1,
       "position": [
-        1280,
-        -208
+        1712,
+        2800
       ],
-      "id": "8ff44ed7-4f93-47a5-a8bd-3e1bd25ef457",
-      "name": "Airticle Post"
+      "id": "dd55c9c1-02bc-4ad9-985d-1a8105afbcc2",
+      "name": "Airticle Post1"
     },
     {
       "parameters": {
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "={{ $('Smart Content Router').item.json.url }}",
+          "value": "={{ $('Smart Content Router1').item.json.url }}",
           "mode": "url"
         },
         "options": {}
@@ -429,11 +429,11 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1504,
-        176
+        1936,
+        3184
       ],
-      "id": "2697de8b-5ca0-43ab-b0ad-ee7e35bc77a4",
-      "name": "Download file1"
+      "id": "402055f2-0e7c-4365-bfa9-912843332f7e",
+      "name": "Download file3"
     },
     {
       "parameters": {
@@ -445,11 +445,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        -304
+        1488,
+        2704
       ],
-      "id": "3b09059e-1eb4-4c76-9b0e-ce67dfcd43af",
-      "name": "Get LinkedIn UserInfo1"
+      "id": "981ffc00-5854-46de-a62b-ead7d660d4d4",
+      "name": "Get LinkedIn UserInfo6"
     },
     {
       "parameters": {
@@ -461,11 +461,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        -16
+        1488,
+        2992
       ],
-      "id": "e90747f7-b41c-4fa3-8d75-2f13e174c96b",
-      "name": "Get LinkedIn UserInfo2"
+      "id": "d7790634-8627-4190-a308-272d1e8fbb24",
+      "name": "Get LinkedIn UserInfo7"
     },
     {
       "parameters": {
@@ -477,11 +477,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        560
+        1488,
+        3568
       ],
-      "id": "ee86f09e-8843-44ae-bc86-d2f2bac0112f",
-      "name": "Get LinkedIn UserInfo3"
+      "id": "343a697e-e45c-45a0-8d03-8229e42acd12",
+      "name": "Get LinkedIn UserInfo8"
     },
     {
       "parameters": {
@@ -493,15 +493,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        272
+        1488,
+        3280
       ],
-      "id": "1d35003f-e9d5-4408-8bb0-ce545b84db55",
-      "name": "Get LinkedIn UserInfo4"
+      "id": "085cd627-5a12-49d6-9678-72dbad408c8d",
+      "name": "Get LinkedIn UserInfo9"
     },
     {
       "parameters": {
-        "url": "={{ $('Smart Content Router').item.json.url }}",
+        "url": "={{ $('Smart Content Router1').item.json.url }}",
         "options": {
           "timeout": 10000
         }
@@ -509,11 +509,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1504,
-        560
+        1936,
+        3568
       ],
-      "id": "a5af9f1e-e9cf-4f2b-a596-7a25bb9f7653",
-      "name": "Download Video"
+      "id": "a3bf7878-d2a8-4c13-9cfa-5586beade189",
+      "name": "Download Video1"
     },
     {
       "parameters": {
@@ -529,11 +529,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1728,
-        560
+        2160,
+        3568
       ],
-      "id": "a1a0db1c-3146-402e-ae1e-9e30f438814f",
-      "name": "Upload Video File"
+      "id": "b7c22db0-7ce7-4f4c-813e-b6c6498867bd",
+      "name": "Upload Video File1"
     },
     {
       "parameters": {
@@ -543,7 +543,7 @@
         "nodeCredentialType": "linkedInOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $('Get LinkedIn UserInfo3').item.json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Now this is how we automate the Video posting\"\n            },\n            \"shareMediaCategory\": \"VIDEO\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Center stage!\"\n                    },\n                    \"media\": \"{{ $('Register Video Upload').item.json.value.asset }}\",\n                    \"title\": {\n                        \"text\": \"I don't know where this text come\"\n                    }\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
+        "jsonBody": "={\n    \"author\": \"urn:li:person:{{ $('Get LinkedIn UserInfo8').item.json.sub }}\",\n    \"lifecycleState\": \"PUBLISHED\",\n    \"specificContent\": {\n        \"com.linkedin.ugc.ShareContent\": {\n            \"shareCommentary\": {\n                \"text\": \"Now this is how we automate the Video posting\"\n            },\n            \"shareMediaCategory\": \"VIDEO\",\n            \"media\": [\n                {\n                    \"status\": \"READY\",\n                    \"description\": {\n                        \"text\": \"Center stage!\"\n                    },\n                    \"media\": \"{{ $('Register Video Upload1').item.json.value.asset }}\",\n                    \"title\": {\n                        \"text\": \"I don't know where this text come\"\n                    }\n                }\n            ]\n        }\n    },\n    \"visibility\": {\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n    }\n}",
         "options": {
           "redirect": {
             "redirect": {}
@@ -553,227 +553,205 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1952,
-        560
+        2368,
+        3712
       ],
-      "id": "4a278ce7-2c51-4f12-ac02-aeb0050eaf6b",
-      "name": "Linkedin Video Post"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        384,
-        -16
-      ],
-      "id": "09152212-ef1a-400f-a6f0-65b202fe2d9c",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "283b6021-2214-44fd-a1c1-da30c1967172",
+      "name": "Linkedin Video Post1"
     }
   ],
   "connections": {
-    "Configure Post Settings": {
+    "Configure Post Settings1": {
       "main": [
         [
           {
-            "node": "Smart Content Router",
+            "node": "Smart Content Router1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Smart Content Router": {
+    "Smart Content Router1": {
       "main": [
         [
           {
-            "node": "Get LinkedIn UserInfo",
+            "node": "Get LinkedIn UserInfo5",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Get LinkedIn UserInfo1",
+            "node": "Get LinkedIn UserInfo6",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Get LinkedIn UserInfo2",
+            "node": "Get LinkedIn UserInfo7",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Get LinkedIn UserInfo4",
+            "node": "Get LinkedIn UserInfo9",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Get LinkedIn UserInfo3",
+            "node": "Get LinkedIn UserInfo8",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Register Image Upload": {
+    "Register Image Upload1": {
       "main": [
         [
           {
-            "node": "Download file1",
+            "node": "Download file3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Register Video Upload": {
+    "Register Video Upload1": {
       "main": [
         [
           {
-            "node": "Download Video",
+            "node": "Download Video1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Upload Image File": {
+    "Upload Image File1": {
       "main": [
         [
           {
-            "node": "Linkedin Image Post",
+            "node": "Linkedin Image Post1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Download file": {
+    "Download file2": {
       "main": [
         [
           {
-            "node": "Image Post Linkedin",
+            "node": "Image Post Linkedin1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get LinkedIn UserInfo": {
+    "Get LinkedIn UserInfo5": {
       "main": [
         [
           {
-            "node": "Text Post",
+            "node": "Text Post1",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Text Post Linkedin",
+            "node": "Text Post Linkedin1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Download file1": {
+    "Download file3": {
       "main": [
         [
           {
-            "node": "Upload Image File",
+            "node": "Upload Image File1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get LinkedIn UserInfo1": {
+    "Get LinkedIn UserInfo6": {
       "main": [
         [
           {
-            "node": "Article Post",
+            "node": "Article Post1",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Airticle Post",
+            "node": "Airticle Post1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get LinkedIn UserInfo2": {
+    "Get LinkedIn UserInfo7": {
       "main": [
         [
           {
-            "node": "Article with Image",
+            "node": "Article with Image1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get LinkedIn UserInfo3": {
+    "Get LinkedIn UserInfo8": {
       "main": [
         [
           {
-            "node": "Register Video Upload",
+            "node": "Register Video Upload1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get LinkedIn UserInfo4": {
+    "Get LinkedIn UserInfo9": {
       "main": [
         [
           {
-            "node": "Register Image Upload",
+            "node": "Register Image Upload1",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Download file",
+            "node": "Download file2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Download Video": {
+    "Download Video1": {
       "main": [
         [
           {
-            "node": "Upload Video File",
+            "node": "Upload Video File1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Upload Video File": {
+    "Upload Video File1": {
       "main": [
         [
           {
-            "node": "Linkedin Video Post",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "Configure Post Settings",
+            "node": "Linkedin Video Post1",
             "type": "main",
             "index": 0
           }
