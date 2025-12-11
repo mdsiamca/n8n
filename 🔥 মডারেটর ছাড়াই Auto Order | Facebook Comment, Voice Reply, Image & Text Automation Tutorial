@@ -1,0 +1,1175 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Here The Details Video Guide\n**Double click** to edit me. [Guide](https://youtu.be/Z0jVUQsoJBA?si=zcKgOoFc3GKzRec1)\n\n@[youtube](Z0jVUQsoJBA)",
+        "height": 560,
+        "width": 768
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1648,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "9f9a82ae-c193-423c-bd8b-ec33dce43328",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Text }}",
+        "options": {
+          "systemMessage": "=You are a smart and friendly food ordering assistant for \" Risosi Restaurant\". Your job is to help customers place and manage food orders by checking inventory, confirming availability, and recording confirmed orders.\n\nOutput will be always in english \n\nYour tone should be friendly and casual, like a food delivery app — not too formal or robotic.\n\nRules:\n\n# Do not use \"*\" in output message\n\n1. When a user sends their first message (e.g., \"hi\", \"hello\"), greet them with:\n\nYo! Welcome to Risosi Restaurant! 🍽️\nYou hungry or just scrolling? 👀\n\nTell me what’s up:\n• Order food like a legend 🍗\n• Ask questions if your brain is confused 🤔\n• Check your order/stock like a boss 📦\n\nI’m here. Let’s eat. 😎🔥\n\n2. If the user wants to *place an order*:\n  - Ask step-by-step: customer name, food item, and quantity.\n  - Check the “ Item list “ before confirming.\n    - If available: respond with  \n      \"Your order for *[item]* (x quantity) is confirmed ✅\"\n    - If not available:  \n      \"Sorry, *[item]* is out of stock ❌. Available options: [list items]\"\n  - Only add confirmed orders to the \"Orders\" sheet.\n  - Orders must include:\n    - Status: Confirmed / Rejected\n    - Description: \"Order accepted (item available)\" or \"Order rejected (out of stock)\"\n\n\"Name\" \t\"Phone Number\" \t\"Food Item\"\tQuentity\"\t\"Delivery Time \" \" Delivery Address \"\n\nthose must required before order confirm\n\nUpdate all data in \"order list\"  sheet\n\n3. If the user wants *FAQ*:\n  - Give short and clear answers about:\n    - Delivery time\n    - Payment methods\n    - Restaurant hours\n\n4. If the user wants to *check order* or *check stock*:\n  - Ask for the food name or order ID.\n  - Look up the info in Google Sheets (Orders / Item List).\n    - For checking order ➝ return status (Confirmed / Rejected / Cancelled / Delivered)\n    - For checking stock ➝ return current available quantity\n  - If requested, also list *all available* food items with their quantities.\n\n5. If the user wants to *cancel an order*:\n  - Respond politely:\n    \"Sorry 🙏 I cannot cancel orders directly.  \n    Please call the restaurant owner and inform them.  \nOwner Name - Siam\n    Owner Contact: +8801568148009\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        376,
+        -784
+      ],
+      "id": "66c46bc1-aaae-4ff0-b01a-b06b0b05bbcc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        -560
+      ],
+      "id": "6feb6d65-adc7-4b34-98a7-9814ddfabbc5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg",
+          "mode": "list",
+          "cachedResultName": "Restrurent Automation System 5 Oct ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1037553671,
+          "mode": "list",
+          "cachedResultName": "FAQ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit#gid=1037553671"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        -560
+      ],
+      "id": "fa115221-0979-4253-a841-ba5b06c8a093",
+      "name": "FAQ"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg",
+          "mode": "list",
+          "cachedResultName": "Restrurent Automation System 5 Oct ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 132576887,
+          "mode": "list",
+          "cachedResultName": "Order List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit#gid=132576887"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name_', ``, 'string') }}",
+            "Phone Number ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Phone_Number_', ``, 'string') }}",
+            "Order Time ": "={{ $now }}",
+            "Food Item": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Food_Item', ``, 'string') }}",
+            "Quentity": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Quentity', ``, 'string') }}",
+            "Delivery Time ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Delivery_Time_', ``, 'string') }}",
+            "Delivery Address": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Delivery_Address', ``, 'string') }}",
+            "Order_id": "={{ $now.toMillis() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Order_id",
+              "displayName": "Order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number ",
+              "displayName": "Phone Number ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Food Item",
+              "displayName": "Food Item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quentity",
+              "displayName": "Quentity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Delivery Time ",
+              "displayName": "Delivery Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Order Time ",
+              "displayName": "Order Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Delivery Address",
+              "displayName": "Delivery Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        -560
+      ],
+      "id": "601ff802-a84f-4557-96dc-dd07d6d28ba3",
+      "name": "Order List"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg",
+          "mode": "list",
+          "cachedResultName": "Restrurent Automation System 5 Oct ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2039766124,
+          "mode": "list",
+          "cachedResultName": "Price List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit#gid=2039766124"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        640,
+        -560
+      ],
+      "id": "80489fc6-e6a0-4c3b-9c49-9f489d031cac",
+      "name": "Price List"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        -560
+      ],
+      "id": "50987b48-e867-4da1-9f15-f3b7694522d3",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg",
+          "mode": "list",
+          "cachedResultName": "Restrurent Automation System 5 Oct ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Item List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-P28ips1cFXsoZJ3-H2pNFkgPbdLHcBiu8hN4svZQZg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        -560
+      ],
+      "id": "301a9f66-1269-472f-8cde-cdb6f845af9a",
+      "name": "item list"
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "massenger",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1120,
+        -880
+      ],
+      "id": "3238b74c-624f-4f04-8a6c-977fcb664a5d",
+      "name": "Webhook",
+      "webhookId": "b2acf254-b50f-4c0c-bed3-07dd7e8628d8"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -896,
+        -976
+      ],
+      "id": "19264e76-eae2-4105-869b-c24b7c176852",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].id }}/messages",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "Your API Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  recipient: {\n    id: $('Webhook').item.json.body.entry[0].messaging[0].sender.id\n  },\n  message: {\n    attachment: {\n      type: 'audio',\n      payload: {\n        attachment_id: $('Upload Audio to Facebook1').item.json.attachment_id\n      }\n    }\n  }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1648,
+        -976
+      ],
+      "id": "7135d411-b0af-4fed-9619-f6fb2c260444",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.entry[0].messaging[0].message.text }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "50b6b946-bc93-4351-9faa-c426eb01c317"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fe34ea05-fb24-46cb-8f8f-eec3f8cd4cb8",
+                    "leftValue": "={{ $json.body.entry[0].messaging[0].message.attachments[0].type }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e841ec93-6961-4fa9-ab14-4f1e64fcd3c6",
+                    "leftValue": "={{ $json.body.entry[0].messaging[0].message.attachments[0].type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "40390a01-541b-48c5-ac4d-66711a55caf7",
+                    "leftValue": "={{ $json.body.entry[0].changes[0].value.item }}",
+                    "rightValue": "=comment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -896,
+        -784
+      ],
+      "id": "2854e3c0-c4c0-427e-b1de-1c6fd5b8df2f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1753faf-e677-4c4a-85f3-13b8ae844a48",
+              "name": "Text",
+              "value": "={{ $json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -976
+      ],
+      "id": "f570856e-02a4-4086-a5d8-ef1d9d8eba41",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bacdf99e-49cf-4b70-9cde-e520699de87f",
+              "name": "Text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "18409b01-7035-49c8-8037-942e8af58cc1",
+              "name": "ID",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -576
+      ],
+      "id": "255303ba-b71d-4bef-8390-133bde9b870a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.entry[0].messaging[0].message.attachments[0].payload.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -672,
+        -768
+      ],
+      "id": "2c17208b-66b3-4c93-a4a3-f0b46a1fd91e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -448,
+        -576
+      ],
+      "id": "bed329d6-b8b7-4dc8-bd91-e8919a908a85",
+      "name": "Transcribe a recording"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -448,
+        -768
+      ],
+      "id": "a08ba836-8f89-4ed6-8d97-80bafe49d19e",
+      "name": "Analyze image"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "baf460eb-35db-4800-b9c6-27f34536d01c",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].changes[0].value.message }}",
+              "rightValue": "25111064955248317",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        -280
+      ],
+      "id": "371fa079-5320-47e1-af39-4f8b6cd0a67c",
+      "name": "If",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=USER  MESSGE:{{ $json.body.entry[0].changes[0].value.message }}",
+        "options": {
+          "systemMessage": "=make a funny reply based on user message . \nNot more than 50 word"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -224,
+        -280
+      ],
+      "id": "2bdf9fef-184d-40c6-81b2-66ca8a018fb5",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].changes[0].value.comment_id }}/comments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Your API Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        440,
+        -376
+      ],
+      "id": "7faaa438-9096-4d87-8618-1bd23a5fd069",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].changes[0].value.comment_id }}/likes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Your API Key"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        440,
+        -184
+      ],
+      "id": "dd634952-8661-46d6-ab3c-1d56ec9fcdcf",
+      "name": "HTTP Cmnt like"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -280
+      ],
+      "id": "a5e85a7a-69c9-4415-b67e-4d4288e81b59",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -216,
+        -56
+      ],
+      "id": "a91f5f05-eabe-4078-acf5-ebe356d60e5f",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.entry[0].changes[0].value.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -88,
+        -56
+      ],
+      "id": "34d67b5c-ec22-4231-8759-3e913330fef2",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v24.0/me/message_attachments",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "Your API Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "{\"attachment\":{\"type\":\"audio\",\"payload\":{\"is_reusable\":true}}}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "filedata",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1424,
+        -976
+      ],
+      "id": "cfeca115-f1a5-427c-8d6c-67e01d762aac",
+      "name": "Upload Audio to Facebook1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v24.0/{{ $('Webhook').item.json.body.entry[0].id }}/messages",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "Your API Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  recipient: {\n    id: $('Webhook').item.json.body.entry[0].messaging[0].sender.id\n  },\n  messaging_type: \"RESPONSE\",\n  message: {\n    text: $json.output\n  }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1200,
+        -784
+      ],
+      "id": "87833189-0203-402f-8970-a51dce9bf2f6",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "Your API Key"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  text: $json.output,\n  model_id: \"eleven_turbo_v2_5\",\n  voice_settings: {\n    stability: 0.5,\n    similarity_boost: 0.75\n  }\n}) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1200,
+        -976
+      ],
+      "id": "677a88d6-a21a-45a0-b83d-b882a4ca30e9",
+      "name": "Generate ElevenLabs Audio1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1753faf-e677-4c4a-85f3-13b8ae844a48",
+              "name": "Text",
+              "value": "={{ $json['0'].content[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -768
+      ],
+      "id": "5a5c305f-137b-4a19-b72f-fb7edd08080a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "00f37327-da6b-4b49-9ab8-37d9f86a6c04",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.attachments[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        -784
+      ],
+      "id": "b8e8caa4-ba5a-4bfa-a0c1-d14ff9ca275d",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.entry[0].messaging[0].message.attachments[0].payload.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -672,
+        -576
+      ],
+      "id": "9f2fefd5-a3a2-4d74-b47f-a15639666cc1",
+      "name": "HTTP Request5"
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Order List": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Price List": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "item list": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Cmnt like",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Audio to Facebook1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate ElevenLabs Audio1": {
+      "main": [
+        [
+          {
+            "node": "Upload Audio to Facebook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Generate ElevenLabs Audio1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f7554c494529940c4340cf7385a6a9837e822037d3d45b7845a3aabb5730f5c3"
+  }
+}
