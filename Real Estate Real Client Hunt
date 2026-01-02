@@ -1,0 +1,296 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 4
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        -112
+      ],
+      "id": "cfe794ce-8c27-4fe1-bc52-7030d8bfc714",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o",
+          "mode": "list",
+          "cachedResultName": "Die Heart Try",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1467858953,
+          "mode": "list",
+          "cachedResultName": "Sheet3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o/edit#gid=1467858953"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Lead Monitor",
+              "lookupValue": "To Do"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -112
+      ],
+      "id": "ca88969a-2e55-4c2f-b623-d49d47668fda",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Bg61NdW9QvrvFvfh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=Add $15K+ Monthly Commission to {{ $json.Name }} With Automation",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n<style>\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;\n  line-height: 1.6;\n  color: #333;\n  max-width: 600px;\n  margin: 0 auto;\n  padding: 20px;\n}\n.header { margin-bottom: 24px; }\n.section { margin-bottom: 28px; }\n.section-title {\n  font-size: 15px;\n  font-weight: 700;\n  color: #d93025;\n  margin-bottom: 12px;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n.problem-item, .solution-item, .result-item {\n  margin: 8px 0;\n  padding-left: 20px;\n  position: relative;\n}\n.problem-item:before {\n  content: \"✗\";\n  position: absolute;\n  left: 0;\n  color: #d93025;\n  font-weight: bold;\n}\n.solution-item:before {\n  content: \"✓\";\n  position: absolute;\n  left: 0;\n  color: #1e8e3e;\n  font-weight: bold;\n}\n.result-item:before {\n  content: \"→\";\n  position: absolute;\n  left: 0;\n  color: #1967d2;\n  font-weight: bold;\n}\n.highlight-box {\n  background: #f8f9fa;\n  border-left: 4px solid #1e8e3e;\n  padding: 16px;\n  margin: 20px 0;\n}\n.revenue-highlight {\n  font-size: 18px;\n  font-weight: 700;\n  color: #1e8e3e;\n  margin: 8px 0;\n}\n.quote {\n  font-style: italic;\n  color: #5f6368;\n  border-left: 3px solid #dadce0;\n  padding-left: 16px;\n  margin: 16px 0;\n}\n.cta-box {\n  background: #1967d2;\n  color: white;\n  padding: 20px;\n  border-radius: 8px;\n  margin: 24px 0;\n  text-align: center;\n}\n.footer {\n  font-size: 13px;\n  color: #5f6368;\n  margin-top: 24px;\n  padding-top: 16px;\n  border-top: 1px solid #dadce0;\n}\nstrong { font-weight: 600; }\n</style>\n</head>\n\n<body>\n\n<div class=\"header\">\n  <p>Hi <strong>{{ $json.Name }}</strong>,</p>\n  <p>Being a real estate agent today means juggling everything—leads, follow-ups, showings, listings, WhatsApp messages, missed calls, and social media.</p>\n  <p><strong>And still losing deals.</strong></p>\n</div>\n\n<div class=\"section\">\n  <div class=\"section-title\">Real Case Study</div>\n\n  <p><strong>The Problems:</strong></p>\n  <div class=\"problem-item\">30% of buyer leads never replied after first contact</div>\n  <div class=\"problem-item\">Agent Mike spent 10+ hours/week following up manually</div>\n  <div class=\"problem-item\">Missed calls during showings = lost hot prospects</div>\n  <div class=\"problem-item\">Listings posted late or inconsistently on social media</div>\n  <div class=\"problem-item\">Leads forgot appointments or property visits</div>\n\n  <p style=\"margin-top:16px;\"><strong>The Breaking Point:</strong><br>\n  Mike was working 70-hour weeks, losing motivated buyers, and watching competitors close deals faster—simply because they responded first.</p>\n</div>\n\n<div class=\"section\">\n  <div class=\"section-title\">What We Automated</div>\n\n  <div class=\"solution-item\">Instant WhatsApp & SMS replies to new leads</div>\n  <div class=\"solution-item\">Automated follow-ups over 14 days (no lead forgotten)</div>\n  <div class=\"solution-item\">Property visit reminders 24h & 2h before appointments</div>\n  <div class=\"solution-item\">Auto-lead capture from Facebook & website forms</div>\n  <div class=\"solution-item\">Listing posts scheduled across social platforms</div>\n  <div class=\"solution-item\">CRM auto-updated with lead status & notes</div>\n</div>\n\n<div class=\"section\">\n  <div class=\"section-title\">Results After 60 Days</div>\n\n  <div class=\"highlight-box\">\n    <div class=\"revenue-highlight\">🏡 $18,500 Extra Commission</div>\n    <div class=\"result-item\">Lead response time dropped from 2 hours to 30 seconds</div>\n    <div class=\"result-item\">Lead conversion rate increased by 38%</div>\n    <div class=\"result-item\">Saved 20+ hours/month on manual follow-ups</div>\n    <div class=\"result-item\">More property visits showed up on time</div>\n    <div class=\"result-item\">Listings gained higher reach & inquiries</div>\n  </div>\n\n  <p><strong>Total Monthly Gain:</strong> $18,500 commission + 20 hours saved</p>\n\n  <div class=\"quote\">\n    \"I stopped chasing leads. Now leads come prepared and ready to buy. Automation literally changed my business.\" — Mike, Real Estate Agent\n  </div>\n</div>\n\n<div class=\"cta-box\">\n  <strong>I can set up the same automation for {{ $json.Name }}</strong>\n  <p style=\"margin:12px 0 0 0;\">Free 15-minute call to identify your biggest deal leaks.</p>\n  <p style=\"margin:16px 0 0 0;\">\n    <a href=\"https://cal.com/atiqursiam/ai-automation-for-your-business\"\n       style=\"display:inline-block;background:white;color:#1967d2;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:600;\">\n       Book a Call\n    </a>\n  </p>\n</div>\n\n<div class=\"footer\">\n  <p><strong>Best,</strong><br>\n  Siam<br>\n  <a href=\"https://wa.me/8801568148009\" style=\"color:#25D366;text-decoration:none;font-weight:600;\">\n    💬 WhatsApp: +880 1568 148009\n  </a><br><br>\n  📅 <a href=\"https://cal.com/atiqursiam/ai-automation-for-your-business\" style=\"color:#1967d2;text-decoration:none;\">\n    cal.com/atiqursiam/ai-automation-for-your-business\n  </a></p>\n</div>\n\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        -112
+      ],
+      "id": "89600f9e-4f4f-42e8-88c7-0e91a6551d03",
+      "name": "Send a message",
+      "webhookId": "4445c87e-67a5-4d38-a0fe-5f34b2bf8254",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tGGETAmHUmN3Eb1E",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o",
+          "mode": "list",
+          "cachedResultName": "Die Heart Try",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1467858953,
+          "mode": "list",
+          "cachedResultName": "Sheet3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NRWBxhK4k3g6gone3F_QEuNVcloAGlQb9V1jfX42r7o/edit#gid=1467858953"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}",
+            "Lead Monitor": "Done"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address ",
+              "displayName": "Address ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Monitor",
+              "displayName": "Lead Monitor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        -112
+      ],
+      "id": "e6e53455-d8bc-4e7a-9623-151cad5d31f9",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Bg61NdW9QvrvFvfh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Send a message').item.json.id }}",
+        "labelIds": [
+          "Label_552507884546405843"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        -112
+      ],
+      "id": "81f2cae8-44f0-4106-8584-d8ca9865273f",
+      "name": "Add label to message",
+      "webhookId": "1ec6e83f-d47b-4bac-b338-22f9563c5745",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tGGETAmHUmN3Eb1E",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Add label to message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "96d3554cd55e1787c9069769b5bd6a9378da8275fca79b5477816b690652dbe7"
+  }
+}
