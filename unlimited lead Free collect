@@ -1,0 +1,204 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8d676704-96b0-46f2-b274-3b1b8e2955e8",
+      "name": "When clicking 'Test workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1b2c3d4",
+              "name": "city",
+              "value": "Toronto",
+              "type": "string"
+            },
+            {
+              "id": "b2c3d4e5",
+              "name": "country",
+              "value": "canada",
+              "type": "string"
+            },
+            {
+              "id": "c3d4e5f6",
+              "name": "industry",
+              "value": "restaurant",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "803d3b8c-8731-4ad6-bb8d-509c63d08cea",
+      "name": "Set Input Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        32,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://nominatim.openstreetmap.org/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.city }}, {{ $json.country }}"
+            },
+            {
+              "name": "format",
+              "value": "json"
+            },
+            {
+              "name": "limit",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "N8N-BusinessLeadCollector/1.0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a44e7592-04e8-41a3-a944-c36ae628bbeb",
+      "name": "Geocode Location",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the response from Geocode Location\nconst item = $input.item;\nlet response = item.json;\n\n// Debug: Log the response structure\nconsole.log('Response type:', typeof response);\nconsole.log('Is array:', Array.isArray(response));\nconsole.log('Response:', JSON.stringify(response));\n\n// If response is already the location object (not an array)\nif (response && response.boundingbox && !Array.isArray(response)) {\n  // Get input parameters from the Set node\n  const inputParams = $('Set Input Parameters').first().json;\n  \n  return {\n    json: {\n      boundingbox: response.boundingbox,\n      city: inputParams.city,\n      country: inputParams.country,\n      industry: inputParams.industry,\n      display_name: response.display_name\n    }\n  };\n}\n\n// If response is an array\nif (Array.isArray(response) && response.length > 0) {\n  const location = response[0];\n  \n  // Get input parameters from the Set node\n  const inputParams = $('Set Input Parameters').first().json;\n  \n  return {\n    json: {\n      boundingbox: location.boundingbox,\n      city: inputParams.city,\n      country: inputParams.country,\n      industry: inputParams.industry,\n      display_name: location.display_name\n    }\n  };\n}\n\n// If we get here, location was not found\nthrow new Error('Location not found. Response: ' + JSON.stringify(response));"
+      },
+      "id": "061693da-e703-425f-8f6d-f373ed49b2d1",
+      "name": "Process Geocoding Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://overpass.kumi.systems/api/interpreter",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "text/plain"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "=[out:json][timeout:25];\n(\n  node[\"shop\"=\"{{ $json.industry }}\"]({{ $json.boundingbox[0] }},{{ $json.boundingbox[2] }},{{ $json.boundingbox[1] }},{{ $json.boundingbox[3] }});\n  way[\"shop\"=\"{{ $json.industry }}\"]({{ $json.boundingbox[0] }},{{ $json.boundingbox[2] }},{{ $json.boundingbox[1] }},{{ $json.boundingbox[3] }});\n  node[\"amenity\"=\"{{ $json.industry }}\"]({{ $json.boundingbox[0] }},{{ $json.boundingbox[2] }},{{ $json.boundingbox[1] }},{{ $json.boundingbox[3] }});\n  way[\"amenity\"=\"{{ $json.industry }}\"]({{ $json.boundingbox[0] }},{{ $json.boundingbox[2] }},{{ $json.boundingbox[1] }},{{ $json.boundingbox[3] }});\n);\nout body;\n>;\nout skel qt;",
+        "options": {}
+      },
+      "id": "7472515b-92e5-4624-b6c0-d2ef3c88df11",
+      "name": "Fetch Business Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the API response\nconst response = $input.item.json;\nconst elements = response.elements || [];\n\n// Get city and country from Set Input Parameters\nconst inputParams = $('Set Input Parameters').first().json;\nconst city = inputParams.city;\nconst country = inputParams.country;\n\n// Filter and format businesses\nconst results = [];\n\nfor (const element of elements) {\n  const tags = element.tags || {};\n  \n  // Only include businesses with name and email\n  if (tags.name && (tags.email || tags['contact:email'])) {\n    results.push({\n      name: tags.name,\n      email: tags.email || tags['contact:email'] || '',\n      phone: tags.phone || tags['contact:phone'] || '',\n      website: tags.website || tags['contact:website'] || '',\n      street: ((tags['addr:housenumber'] || '') + ' ' + (tags['addr:street'] || '')).trim(),\n      postcode: tags['addr:postcode'] || '',\n      city: tags['addr:city'] || city,\n      country: tags['addr:country'] || country,\n      type: tags.shop || tags.amenity || '',\n      latitude: element.lat || '',\n      longitude: element.lon || ''\n    });\n  }\n}\n\n// If no results found, return a message\nif (results.length === 0) {\n  return [{\n    json: {\n      message: `Found ${elements.length} businesses but none have email addresses in OpenStreetMap data.`,\n      total_found: elements.length,\n      with_email: 0\n    }\n  }];\n}\n\n// Return all results as separate items\nreturn results.map(item => ({ json: item }));"
+      },
+      "id": "498679e8-7da5-40f6-b0ba-28d0f3a6107d",
+      "name": "Filter Businesses with Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -16
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking 'Test workflow'": {
+      "main": [
+        [
+          {
+            "node": "Set Input Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Input Parameters": {
+      "main": [
+        [
+          {
+            "node": "Geocode Location",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Geocode Location": {
+      "main": [
+        [
+          {
+            "node": "Process Geocoding Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Geocoding Result": {
+      "main": [
+        [
+          {
+            "node": "Fetch Business Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Business Data": {
+      "main": [
+        [
+          {
+            "node": "Filter Businesses with Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "96d3554cd55e1787c9069769b5bd6a9378da8275fca79b5477816b690652dbe7"
+  }
+}
